@@ -1,0 +1,293 @@
+<!-- basically an html wizard so i thought i would at least make it look good because this my first time messing with sql. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tide Lookup • Stunning Demo</title>
+<style>
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  a, button {
+    cursor: pointer;
+    font-family: inherit;
+  }
+  /* Hero Section */
+  header {
+    background: linear-gradient(135deg, rgba(12,54,80,0.85), rgba(12,54,80,0.85)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 4rem 1.5rem 6rem;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  }
+  header h1 {
+    margin: 0 0 0.5rem;
+    font-size: 2.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0,123,255,0.7);
+  }
+  header p {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #aad8ffdd;
+    font-weight: 500;
+  }
+
+  /* Main content container */
+  main {
+    flex-grow: 1;
+    max-width: 480px;
+    margin: -3rem auto 3rem;
+    background: rgba(255 255 255 / 0.05);
+    border-radius: 12px;
+    padding: 2rem 2rem 3rem;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  }
+
+  /* Form */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  /* Floating label style */
+  .field-group {
+    position: relative;
+    font-size: 1rem;
+  }
+  input {
+    width: 100%;
+    padding: 1.25rem 1rem 0.5rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255 255 255 / 0.1);
+    color: #e0e9ff;
+    font-size: 1.1rem;
+    transition: background 0.3s ease;
+  }
+  input:focus {
+    background: rgba(255 255 255 / 0.18);
+    outline: none;
+  }
+  label {
+    position: absolute;
+    top: 1.25rem;
+    left: 1rem;
+    color: #a5b9ffcc;
+    font-weight: 600;
+    pointer-events: none;
+    transition: 0.3s ease all;
+  }
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: 0.3rem;
+    font-size: 0.75rem;
+    color: #4db8ff;
+  }
+
+  /* Button */
+  button {
+    padding: 0.9rem 0;
+    background: #1e90ff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #fff;
+    box-shadow: 0 8px 15px rgb(30 144 255 / 0.5);
+    transition: background-color 0.3s ease;
+  }
+  button:hover:not(:disabled) {
+    background: #4db8ff;
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Result area */
+  #result {
+    margin-top: 2rem;
+  }
+  .tide-card {
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-weight: 600;
+  }
+
+  /* Typography and icons inside card */
+  .tide-type {
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .tide-type svg {
+    width: 24px; height: 24px;
+    fill: #4db8ff;
+  }
+  .tide-time {
+    font-size: 1rem;
+    color: #a5b9ffcc;
+  }
+  .tide-height {
+    font-size: 1.2rem;
+    color: #d4e9ff;
+  }
+
+  /* Error and loading */
+  #result .error {
+    color: #ff6b6b;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  #result .loading {
+    text-align: center;
+    font-weight: 600;
+    color: #8ec3ff;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 520px) {
+    main {
+      margin: -2rem 1rem 2rem;
+      padding: 1.5rem 1.5rem 2.5rem;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Discover Your Local Tides</h1>
+  <p>Enter your API key and city to get accurate tide data instantly.</p>
+</header>
+
+<main>
+  <form id="tideForm" autocomplete="off" aria-label="Tide lookup form">
+    <div class="field-group">
+      <input id="apikey" type="password" placeholder=" " required aria-required="true" aria-describedby="apikeyHelp" />
+      <label for="apikey">API Key</label>
+    </div>
+    <div class="field-group">
+      <input id="city" type="text" placeholder=" " required aria-required="true" aria-describedby="cityHelp" />
+      <label for="city">City</label>
+    </div>
+    <button type="submit" id="fetchBtn">Get Tide Data</button>
+  </form>
+
+  <div id="result" role="region" aria-live="polite" aria-atomic="true"></div>
+</main>
+
+<script>
+  const form = document.getElementById('tideForm');
+  const resultDiv = document.getElementById('result');
+  const button = document.getElementById('fetchBtn');
+
+  const waveIcon = `
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+      <path d="M2 15s3-5 7-5 7 5 11 5v2H2v-2z"></path>
+    </svg>`;
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    resultDiv.innerHTML = '';
+    button.disabled = true;
+
+    const apikey = document.getElementById('apikey').value.trim();
+    const city = document.getElementById('city').value.trim();
+
+    if (!apikey || !city) {
+      resultDiv.innerHTML = `<p class="error">Please fill in both API Key and City.</p>`;
+      button.disabled = false;
+      return;
+    }
+
+    resultDiv.innerHTML = `<p class="loading">Loading tide data...</p>`;
+
+    try {
+      const url = new URL('http://127.0.0.1:8000/tides');
+      url.searchParams.append('city', city);
+
+      const response = await fetch(url, {
+        headers: { 'X-API-Key': apikey }
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Unknown error occurred');
+      }
+
+      const data = await response.json();
+
+      if (!data.tides || data.tides.length === 0) {
+        resultDiv.innerHTML = `<p class="error">No tide data available for "${city}".</p>`;
+        button.disabled = false;
+        return;
+      }
+
+      // Build result cards
+      const cards = data.tides.map(tide => `
+        <div class="tide-card" tabindex="0">
+          <div class="tide-type">${waveIcon}${tide.type}</div>
+          <div class="tide-time">${tide.time} <span aria-hidden="true">•</span> ${tide.date}</div>
+          <div class="tide-height">${tide.height_ft} ${tide.height_m}</div>
+        </div>
+      `).join('');
+
+      resultDiv.innerHTML = `<h2>Tide Data for ${data.city}</h2>${cards}`;
+    } catch (err) {
+      resultDiv.innerHTML = `<p class="error">Error: ${err.message}</p>`;
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html><style>
+  #apiKeySidebar {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #00796b;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    cursor: default;
+    user-select: none;
+    z-index: 9999;
+  }
+</style>
+
+<div id="apiKeySidebar">
+  The API key is "Verne" by the way
+</div>
