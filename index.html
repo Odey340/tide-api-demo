@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tide Lookup • Stunning Demo</title>
 <style>
-  /* Reset & base */
+ 
   *, *::before, *::after {
     box-sizing: border-box;
   }
@@ -22,7 +22,7 @@
     cursor: pointer;
     font-family: inherit;
   }
-  /* Hero Section */
+  
   header {
     background: linear-gradient(135deg, rgba(12,54,80,0.85), rgba(12,54,80,0.85)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80');
     background-size: cover;
@@ -45,7 +45,7 @@
     font-weight: 500;
   }
 
-  /* Main content container */
+  
   main {
     flex-grow: 1;
     max-width: 480px;
@@ -56,14 +56,14 @@
     box-shadow: 0 12px 30px rgba(0,0,0,0.4);
   }
 
-  /* Form */
+ 
   form {
     display: flex;
     flex-direction: column;
     gap: 1.75rem;
   }
 
-  /* Floating label style */
+  
   .field-group {
     position: relative;
     font-size: 1rem;
@@ -98,7 +98,7 @@
     color: #4db8ff;
   }
 
-  /* Button */
+  
   button {
     padding: 0.9rem 0;
     background: #1e90ff;
@@ -118,7 +118,7 @@
     cursor: not-allowed;
   }
 
-  /* Result area */
+  
   #result {
     margin-top: 2rem;
   }
@@ -133,7 +133,7 @@
     font-weight: 600;
   }
 
-  /* Typography and icons inside card */
+  
   .tide-type {
     font-size: 1.15rem;
     display: flex;
@@ -166,7 +166,7 @@
     color: #8ec3ff;
   }
 
-  /* Responsive adjustments */
+  
   @media (max-width: 520px) {
     main {
       margin: -2rem 1rem 2rem;
@@ -248,7 +248,7 @@
         return;
       }
 
-      // Build result cards
+     
       const cards = data.tides.map(tide => `
         <div class="tide-card" tabindex="0">
           <div class="tide-type">${waveIcon}${tide.type}</div>
@@ -291,3 +291,4 @@
 <div id="apiKeySidebar">
   The API key is "Verne" by the way
 </div>
+<!-- after my favorite author, jules verne -->
