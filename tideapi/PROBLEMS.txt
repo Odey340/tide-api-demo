@@ -1,0 +1,56 @@
+Tide API Project — Lessons Learned + Problem Solving Notes
+===========================================================
+
+Overview
+--------
+This project helped me strengthen my skills in building a full-stack application using FastAPI, PostgreSQL, and a modern frontend. Below are the common issues I encountered and exactly how I resolved them. I kept this log to demonstrate my persistence and learning process.
+
+---
+
+Setup Issues and Fixes
+-----------------------
+
+❌ Database "tideapi" does not exist
+   - Tried connecting before creating the database.
+   ✅ Opened pgAdmin and created the tideapi database manually.
+
+❌ AttributeError: module 'routes.user' has no attribute 'router'
+   - Forgot to define the APIRouter in routes/user.py.
+   ✅ Added `router = APIRouter()` and used it correctly with decorators.
+
+❌ ImportError: attempted relative import beyond top-level package
+   - Used relative imports in a file run directly.
+   ✅ Switched to absolute imports like `from tideapi import models`.
+
+❌ ModuleNotFoundError: No module named 'routes'
+   - Misunderstood the project structure.
+   ✅ Fixed by using `from tideapi.routes import user` instead.
+
+❌ 403 Forbidden or 500 Internal Server Error
+   - Forgot to pass the API key, or external API call to NOAA failed.
+   ✅ Made sure to include the correct header: `X-API-Key: Verne`.
+   ✅ Added error handling in backend for API fetch failures.
+
+---
+
+Final Working Setup
+--------------------
+
+- FastAPI backend with API key authentication
+- PostgreSQL database managed via SQLAlchemy
+- Pydantic models for validation
+- Clean project structure (routes/, models/, schemas/, services/)
+- NOAA API used for live tide data
+- CORS enabled to support frontend requests
+- Frontend is a responsive, animated, and styled single-page app
+- Backend launched with:
+      uvicorn main:app --reload
+
+---
+
+Reflection
+----------
+
+it became a deep hands-on experience in building a real, working system. It helped me improve my problem-solving skills, learn how to integrate third-party APIs, and understand the importance of good structure and documentation.
+
+I kept this file to track progress and to show recruiters I don’t just build projects — I learn from the entire process.
